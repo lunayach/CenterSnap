@@ -119,6 +119,7 @@ class OBBOutput:
 
 def compute_point_cloud_embeddings(heatmap_output, latent_emb_output, min_confidence):
   peaks = pose_outputs.extract_peaks_from_centroid_sorted(np.copy(heatmap_output), min_confidence)
+  # finds the peak coordinates
   #peaks_image = None
   peaks_image = pose_outputs.draw_peaks(np.copy(heatmap_output), np.copy(peaks))
   latent_embs, indices, scores = pose_outputs.extract_latent_emb_from_peaks(

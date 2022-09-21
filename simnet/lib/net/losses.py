@@ -9,6 +9,7 @@ import IPython
 class MaskedL1Loss(nn.Module):
 
   def __init__(self, centroid_threshold=0.3, downscale_factor=8):
+    # todo please remove hardcoding and use something that has been used in the segmentation losses!
     super().__init__()
     self.loss = nn.L1Loss(reduction='none')
     self.centroid_threshold = centroid_threshold

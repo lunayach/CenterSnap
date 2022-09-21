@@ -14,6 +14,7 @@ from simnet.lib.net.post_processing import keypoint_outputs
 def res_fpn(hparams):
   return PanopticNet(hparams)
 
+# Loss against GT depth
 class DepthHead(nn.Module):
   def __init__(self, backbone_output_shape, hparams):
     super().__init__()
@@ -29,6 +30,7 @@ class DepthHead(nn.Module):
     return depth_outputs.DepthOutput(depth_pred, self.hparams)
 
 
+# todo check the format of input segmentation mask
 class SegmentationHead(nn.Module):
   def __init__(self, backbone_output_shape, num_classes, hparams):
     super().__init__()
@@ -149,22 +151,23 @@ class KeypointHead(nn.Module):
     return keypoint_outputs.KeypointOutput(heatmap_output, self.hparams)
 
 class PanopticNet(nn.Module):
-
+  # The model that is being used.
   def __init__(self, hparams):
     super().__init__()
     self.hparams = hparams
     input_shape = ShapeSpec(channels=3, height=512, width=640)
+    # (cls, channels, height, width, stride)
     stereo_stem = RGBDStem(hparams)
     self.backbone = build_resnet_fpn_backbone(
         input_shape,
         stereo_stem,
-        model_norm=hparams.model_norm,
-        num_filters_scale=hparams.num_filters_scale
+        model_norm=hparams.model_norm, #BN
+        num_filters_scale=hparams.num_filters_scale #4
     )
     shape = output_shape(self.backbone)
     # Add depth head.
     self.depth_head = DepthHead(shape, hparams)
-    # Add segmentation head. 6+1 categories for NOCS
+    # Add segmentation head. 6+1 categories for NOCS, no of categories known beforehand
     self.seg_head = SegmentationHead(shape, 7, hparams)
     self.pose_head = OBBHead(shape, hparams)
     self.box_head = BoxHead(shape, hparams)

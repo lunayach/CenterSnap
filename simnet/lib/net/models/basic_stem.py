@@ -8,6 +8,7 @@ from simnet.lib.net.models import panoptic_backbone
 class RGBDStem(nn.Module):
 
   def __init__(self, hparams, in_channels=3):
+    # Default in_channels 3 used
     super().__init__()
     self.rgb_stem = panoptic_backbone.BasicStem(in_channels=in_channels, out_channels=32)
     self.depth_stem = panoptic_backbone.BasicStem(in_channels=1, out_channels=1)
@@ -19,6 +20,7 @@ class RGBDStem(nn.Module):
     small_disp = self.depth_stem.forward(stacked_img[:, 3:], None)
     left_rgb_features = self.rgb_stem.forward(stacked_img[:, 0:3], robot_joint_angles)
     disp_features = self.disp_features(small_disp)
+    # robot joint angles is not used anywhere
     return torch.cat((disp_features, left_rgb_features), axis=1), small_disp
 
   @property

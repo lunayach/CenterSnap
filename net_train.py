@@ -55,9 +55,10 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
   common.add_train_args(parser)
   hparams = parser.parse_args()
+  # LocalDataset() is initiated, just the path is organised
   train_ds = datapoint.make_dataset(hparams.train_path)
-  samples_per_epoch = len(train_ds.list())
-  samples_per_step = hparams.train_batch_size
+  samples_per_epoch = len(train_ds.list()) #number of zstd files = 249166
+  samples_per_step = hparams.train_batch_size #32
   steps = hparams.max_steps
   steps_per_epoch = samples_per_epoch // samples_per_step
   epochs = int(np.ceil(steps / steps_per_epoch))

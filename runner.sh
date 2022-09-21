@@ -8,4 +8,4 @@ export PYTHONPATH=$PYTHONPATH:$(readlink -f "${SCRIPT_DIR}/export")
 export OPENBLAS_NUM_THREADS=1
 export PYOPENGL_PLATFORM=egl
 
-$SCRIPT_DIR/env/bin/python $@
+$SCRIPT_DIR/env/bin/python -m cProfile -o profile_out $@

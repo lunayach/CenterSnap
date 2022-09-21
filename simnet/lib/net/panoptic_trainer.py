@@ -43,6 +43,9 @@ class PanopticModel(pl.LightningModule):
         learning_rate = param_group['lr']
 
   def training_step(self, batch, batch_idx):
+    import ipdb
+    ipdb.set_trace()
+    print("$$$$")
     image, seg_target, depth_target, pose_targets, _, _ = batch
     seg_output, depth_output, small_depth_output, pose_outputs = self.forward(
         image

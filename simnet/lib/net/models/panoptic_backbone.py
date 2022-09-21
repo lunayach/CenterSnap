@@ -101,12 +101,17 @@ def c2_normal_fill(module: nn.Module) -> None:
 
 def build_resnet_fpn_backbone(input_shape, stereo_stem, model_norm='BN', num_filters_scale=4):
   # For now, we are just hardcode the global parameters. We plan to depracte dectron2 dependence this quarter.
+        #   input_shape,
+        # stereo_stem,
+        # model_norm=hparams.model_norm, #BN
+        # num_filters_scale=hparams.num_filters_scale #4
+  
   MODEL_FPN_NORM = model_norm
   MODEL_FPN_OUT_CHANNELS = 256 // num_filters_scale
 
-  if USE_TOP_BLOCK_P6:
+  if USE_TOP_BLOCK_P6: #false
     top_block = LastLevelMaxPool()
-  elif False:
+  elif False: #not used
     in_channels_p6p7 = bottom_up.output_shape()["res5"].channels
     top_block = LastLevelP6P7(in_channels_p6p7, out_channels)
   else:
@@ -245,7 +250,7 @@ class SemSegFPNHead(nn.Module):
   def forward(self, features, targets=None):
     """
       Returns:
-        In training, returns (None, dict of losses)
+        In training, returns (None, dict of losses) # does the same thing in inference and 
         In inference, returns (predictions, {})
       """
     x = self.layers(features)
@@ -1199,6 +1204,7 @@ class BasicStem(nn.Module):
 
   def __init__(self, in_channels=3, out_channels=64, norm="BN"):
     """
+    Reason for stem: https://stackoverflow.com/a/72679449
     Args:
       norm (str or callable): a callable that takes the number of
         channels and return a `nn.Module`, or a pre-defined string

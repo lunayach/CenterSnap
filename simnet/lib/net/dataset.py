@@ -74,4 +74,14 @@ class Dataset(Dataset):
       )
       pose_target.convert_to_torch_from_numpy()
     scene_name = dp.scene_name
+    # anaglyph is the image
+    # import ipdb
+    # ipdb.set_trace()
+    # image is 4 x 480 x 640
+    # segmentation_target is 480 x 640, looks like multiple objects in one image like 0,1,3,4
+    # depth_target is of shape 480 x 640, values like 0, 8.4157, 3.2706
+    # heatmap in OBB is like 1% of non-zero = 480 x 640
+    # latent_emb is 128 x 60 x 80
+    # abs_pose_fields is 13 x 60 x 80
+    # 
     return anaglyph, segmentation_target, depth_target, pose_target, dp.detections, scene_name

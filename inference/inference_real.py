@@ -61,6 +61,7 @@ def inference(
       _, _, _ , pose_output = model.forward(input)
       latent_emb_outputs, abs_pose_outputs, img_output, _, _ = pose_output.compute_pointclouds_and_poses(min_confidence,is_target = False)
 
+    # img_output is the image with drawn heatmap peaks
     auto_encoder_path = os.path.join(data_dir, 'ae_checkpoints', 'model_50_nocs.pth')
     ae = get_auto_encoder(auto_encoder_path)
     cv2.imwrite(

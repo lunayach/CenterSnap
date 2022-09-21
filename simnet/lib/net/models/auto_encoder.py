@@ -48,7 +48,7 @@ class PointCloudDecoder(nn.Module):
         out_pc = out.view(bs, -1, 3)
         return out_pc
 
-
+# decoder points from 128 to 2048
 class PointCloudAE(nn.Module):
     def __init__(self, emb_dim=512, n_pts=1024):
         super(PointCloudAE, self).__init__()

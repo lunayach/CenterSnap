@@ -22,6 +22,7 @@ def resnet_shortcut(in_channels, out_channels, stride, preact=False):
     Returns:
         Module of shortcut layers.
     """
+  # in_channels=1, base_channels=32, stride=1, preact=True
   if stride == 1 and in_channels == out_channels:
     return None
 
@@ -62,16 +63,16 @@ class PreactBasicResidualBlock(ResidualBlock):
   ):
     """
         Args:
-            in_channels (int): The number of input channels.
-            base_channels (int): The number of output channels.
-            stride (int, optional): Stride of the residual block.
-            dilation_rate (int, optional): Dilation rate of the residual block.
+            in_channels (int): The number of input channels. = 1
+            base_channels (int): The number of output channels. = 32
+            stride (int, optional): Stride of the residual block. = 1
+            dilation_rate (int, optional): Dilation rate of the residual block. = 5
             add_preact (bool, optional): If True, add pre-activation.
             add_last_norm (bool, optional): If True, add batch normalization
                                             after the last convolution.
         """
     super().__init__()
-    if add_preact:
+    if add_preact: # is true
       self.preact_bn = nn.BatchNorm2d(in_channels)
     else:
       self.preact_bn = None
