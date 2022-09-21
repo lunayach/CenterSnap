@@ -1,4 +1,5 @@
 wandb/
 *.sh
 *.txt
-
+.vscode/
+profile_out
