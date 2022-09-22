@@ -14,6 +14,7 @@ from simnet.lib import datapoint
 from simnet.lib.net.post_processing.segmentation_outputs import SegmentationOutput
 from simnet.lib.net.post_processing.depth_outputs import DepthOutput
 from simnet.lib.net.post_processing.abs_pose_outputs import OBBOutput
+from typing import List
 
 def extract_left_numpy_img(anaglyph):
   anaglyph_np = np.ascontiguousarray(anaglyph.cpu().numpy())
@@ -75,3 +76,10 @@ class Dataset(Dataset):
       pose_target.convert_to_torch_from_numpy()
     scene_name = dp.scene_name
     return anaglyph, segmentation_target, depth_target, pose_target, dp.detections, scene_name
+
+class MixedDataset(torch.utils.data.Dataset):
+  def __init__(self, datasets: List[torch.utils.data.Dataset], hparams: object) -> None:
+    super().__init__()
+    self.datasets = datasets
+    self.hparams = hparams
+
